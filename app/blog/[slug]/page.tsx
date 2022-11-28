@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { extractMetadata } from "utils/markdown";
 import Markdown from "components/Markdown";
-import { isPropertyAccessChain } from "typescript";
 
 interface Props {
 	params: {

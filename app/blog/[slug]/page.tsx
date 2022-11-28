@@ -17,14 +17,14 @@ const fetchPost = async (slug: string) => {
 
 const Page = async ({ params }: Props) => {
 	const { slug } = params;
-	// const data = await fetchPost(slug);
-	// if (!data) {
-	// 	notFound();
-	// }
-	// const post = extractMetadata(data);
+	const data = await fetchPost(slug);
+	if (!data) {
+		notFound();
+	}
+	const post = extractMetadata(data);
 	return (
 		<div>
-			<Markdown>{slug}</Markdown>;
+			<Markdown>{post.markdown}</Markdown>;
 		</div>
 	);
 };

@@ -6,6 +6,7 @@ const nextConfig = {
 		appDir: true,
 		runtime: "experimental-edge",
 	},
+	include: ["web-components/*/declarations.d.ts"],
 };
 
 module.exports = nextConfig;

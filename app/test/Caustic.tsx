@@ -16,7 +16,7 @@ const Caustic = () => {
 	return (
 		<>
 			<div>{FormWrapper.localName}</div>
-			<caustic-canvas />
+			<caustic-canvas checked={true} name="abc" />
 			<form-wrapper />
 		</>
 	);

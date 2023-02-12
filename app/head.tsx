@@ -1,4 +1,4 @@
-import ElementDefinitions from "components/ElementDefinitions";
+import ElementDefinitions from "components/client/element-definitions";
 
 const Head = () => {
 	return (

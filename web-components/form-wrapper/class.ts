@@ -1,22 +1,19 @@
-import { CustomElement } from "types/custom-elements";
+import { CustomElement, CustomElementClass } from "types/custom-elements";
 
-const template = /* html */ `
-  <div>Form Component...</div>
-`;
-
-const FormWrapper: CustomElement = class extends HTMLElement {
+const FormWrapper: CustomElement = class
+	extends HTMLElement
+	implements CustomElementClass
+{
 	static localName = "form-wrapper" as const;
 	constructor() {
 		super();
-		this.attachShadow({ mode: "open" });
 	}
 	connectedCallback() {
 		this.render();
 	}
-	render() {
-		if (this.shadowRoot === null) throw new Error("Shadow root is null");
-		this.shadowRoot.innerHTML = template;
-	}
+	render() {}
+	template = "";
+	styles = "";
 };
 
 export default FormWrapper;

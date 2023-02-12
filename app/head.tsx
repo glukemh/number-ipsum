@@ -1,3 +1,5 @@
+import ElementDefinitions from "components/ElementDefinitions";
+
 const Head = () => {
 	return (
 		<>
@@ -7,6 +9,7 @@ const Head = () => {
 			<meta name="keywords" content="Math, Code, Programming" />
 			<meta name="author" content="Luke Mendelman-Haenn" />
 			<link rel="icon" href="/favicon.ico" />
+			<ElementDefinitions />
 		</>
 	);
 };

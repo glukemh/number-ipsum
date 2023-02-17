@@ -1,12 +1,16 @@
-import { CustomElement, CustomElementClass } from "types/custom-elements";
+import {
+	CustomElementClass,
+	CustomElementLocalName,
+} from "types/custom-elements";
 import { handler, map } from "utils/template";
-import "../form-wrapper";
+import "../form-wrapper/definition";
 
-const CausticCanvas: CustomElement = class
+const localName: CustomElementLocalName = "caustic-canvas";
+
+const CausticCanvas: CustomElementConstructor = class
 	extends HTMLElement
 	implements CustomElementClass
 {
-	static localName = "caustic-canvas" as const;
 	constructor() {
 		super();
 		this.attachShadow({ mode: "open" });
@@ -47,5 +51,9 @@ const CausticCanvas: CustomElement = class
 		`;
 	}
 };
+
+if (!window.customElements.get(localName)) {
+	window.customElements.define(localName, CausticCanvas);
+}
 
 export default CausticCanvas;

@@ -1,7 +1,9 @@
+import CausticCanvas from "components/custom-elements/caustic-canvas";
+
 const Page = () => {
 	return (
 		<>
-			<caustic-canvas name="asdf" checked={true} />
+			<CausticCanvas name="asdf" checked={true} />
 		</>
 	);
 };

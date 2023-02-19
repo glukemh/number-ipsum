@@ -1,9 +1,12 @@
 import CarouselGrid from "components/server/carousel-grid";
-import HelloWorld from "./hello.mdx";
+import HelloWorld, { meta } from "./hello.mdx";
 
 const Page = () => {
 	return (
-		<HelloWorld />
+		<>
+			<h1>{meta.title}</h1>
+			<HelloWorld />
+		</>
 		// <CarouselGrid>
 		// 	<h1>Number Ipsum</h1>
 		// 	<h1>Number Ipsum</h1>

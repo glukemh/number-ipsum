@@ -1,5 +1,5 @@
-import CarouselGrid from "components/server/carousel-grid";
-import HelloWorld, { meta } from "./hello.mdx";
+import CarouselGrid from "components/carousel-grid";
+import HelloWorld, { meta } from "posts/hello.mdx";
 
 const Page = () => {
 	return (

@@ -1,4 +1,4 @@
-import CausticCanvas from "components/custom-elements/caustic-canvas";
+import CausticCanvas from "custom-elements/caustic-canvas";
 
 const Page = () => {
 	return (

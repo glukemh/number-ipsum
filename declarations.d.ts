@@ -1,10 +1,6 @@
+import { PostMeta } from "types/mdx";
+
 declare module "posts/*.mdx" {
-	export const meta: {
-		title: string;
-		author: string;
-		date: `${number}-${number}-${number}`; // YYYY-MM-DD
-		description: string;
-		tags: string[];
-	};
+	export const meta: PostMeta;
 	export default function MDXContent(): JSX.Element;
 }

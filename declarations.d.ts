@@ -1,6 +1,6 @@
-import { PostMeta } from "types/mdx";
-
 declare module "posts/*.mdx" {
+	import { PostMeta } from "types/mdx";
+	let MDXComponent: (props: any) => JSX.Element;
 	export const meta: PostMeta;
-	export default function MDXContent(): JSX.Element;
+	export default MDXComponent;
 }

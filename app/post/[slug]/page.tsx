@@ -6,11 +6,10 @@ interface Props {
 		slug: string;
 	};
 }
-
 const Page = async ({ params }: Props) => {
 	const { slug } = params;
-	// const Post: LazyPost = React.lazy(() => import(`posts/${slug}.mdx`));
 	const { default: Post, meta }: PostImport = await import(`posts/${slug}.mdx`);
+	// const Post: LazyPost = React.lazy(() => import(`posts/${slug}.mdx`));
 	return <Post />;
 };
 

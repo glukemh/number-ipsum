@@ -1,5 +1,7 @@
 import mdx from "@next/mdx";
 import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+import rehypeMathjax from "rehype-mathjax";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -15,8 +17,8 @@ const nextConfig = {
 const withMDX = mdx({
 	extension: /\.mdx?$/,
 	options: {
-		remarkPlugins: [remarkGfm],
-		rehypePlugins: [],
+		remarkPlugins: [remarkGfm, remarkMath],
+		rehypePlugins: [rehypeMathjax],
 	},
 });
 

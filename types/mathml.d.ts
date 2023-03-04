@@ -19,7 +19,6 @@ declare namespace JSX {
 		math: BaseMathMLAttributes & {
 			display?: "block" | "inline";
 		};
-		semantics: BaseMathMLAttributes;
 		annotation: BaseMathMLAttributes & {
 			encoding?: string;
 		};

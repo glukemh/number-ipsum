@@ -7,7 +7,7 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"cloudflare-pages": "npx @cloudflare/next-on-pages --watch",
+		"pages": "npx @cloudflare/next-on-pages --watch",
 		"wrangler": "npx wrangler pages dev .vercel/output/static --compatibility-flags=streams_enable_constructors"
 	},
 	"dependencies": {

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MathML</title>
+  <link rel="stylesheet" href="/styles/global.css">
+  <link rel="stylesheet" href="/posts/mathml/styles.css">
+  <script type="module" src="/components/format-code"></script>
+</head>
+
+<body>
+  <main>
+    <article>
+      <h1>Learning MathML</h1>
+      <p>
+        MathML is a markup language for describing mathematical notation and
+        capturing both its structure and content. The standard makes it possible
+        to publish mathematical notation and content in a form that can be
+        rendered by browsers and other applications while being accessible to
+        screen readers and assistive technologies.
+      </p>
+      <p>
+        MathML Core is a subset of MathML that is now supported by <strong>all major
+          browsers</strong>. It took a while, but as of January 2023, MathML has finally
+        returned to Chrome in version 109 a decade later, after having been
+        removed all the way back in 2013.
+      </p>
+      <h2>Math in HTML</h2>
+      <p>
+        For starters, let's see how we write <math>
+          <mrow>
+            <mi>y</mi>
+            <mo>=</mo>
+            <msup>
+              <mi>x</mi>
+              <mn>2</mn>
+            </msup>
+            <mo>-</mo>
+            <mn>4</mn>
+          </mrow>
+        </math>. This markup uses the <code>&lt;math&gt;</code> element, and
+        looks like the following if you inspect this document.
+      </p>
+      <format-code block>
+        <math>
+          <mrow>
+            <mi>y</mi>
+            <mo>=</mo>
+            <msup>
+              <mi>x</mi>
+              <mn>2</mn>
+            </msup>
+            <mo>-</mo>
+            <mn>4</mn>
+          </mrow>
+        </math>
+      </format-code>
+      <p>
+        Admittedly, it's quite verbose, but perfectly captures all the semantics of the quadratic equation.
+      </p>
+    </article>
+  </main>
+</body>
+
+</html>

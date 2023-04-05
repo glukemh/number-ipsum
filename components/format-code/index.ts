@@ -13,7 +13,6 @@ class FormatCode extends HTMLElement {
 		let text = this.innerHTML;
 		text = text.trimEnd().replace(/^\n/, "");
 		let lines = text.split("\n");
-		console.log(lines);
 		while (lines.every((line) => /^\s/.test(line) || line === "")) {
 			lines = lines.map((line) => {
 				if (line === "") return line;
@@ -30,7 +29,11 @@ class FormatCode extends HTMLElement {
 		this.shadowRoot?.appendChild(pre);
 	}
 
-	attributeChangedCallback(name: string, oldValue: boolean, newValue: boolean) {
+	attributeChangedCallback(
+		name: string,
+		_oldValue: boolean,
+		newValue: boolean
+	) {
 		if (name === "block") {
 			this.block = newValue;
 		}

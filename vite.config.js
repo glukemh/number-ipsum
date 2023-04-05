@@ -4,7 +4,7 @@ import path from "path";
 import fs from "fs";
 
 const mappings = {
-	"/pages/hello": "/pages/hello/index.html",
+	"/posts/mathml": "/posts/mathml/index.html",
 };
 
 const htmlExtFallback = {
@@ -14,12 +14,8 @@ const htmlExtFallback = {
 			// Check extensionless URLs but ignore the `/` root path
 			if (req.originalUrl.length > 1 && !path.extname(req.originalUrl)) {
 				const mapping = mappings[req.originalUrl];
-				console.log("url", req.url);
-				console.log("originalUrl", req.originalUrl);
-				console.log("mapping", mapping);
 				if (mapping) {
 					req.url = mapping;
-					console.log("url", req.url);
 				} else if (
 					fs.existsSync(path.join(__dirname, `${req.originalUrl}.html`))
 				) {

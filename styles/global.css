@@ -1,0 +1,15 @@
+*,
+::before,
+::after {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	min-height: 100vh;
+}
+
+body {
+	display: grid;
+	place-items: center;
+}

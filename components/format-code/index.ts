@@ -1,3 +1,5 @@
+// import template from "./template.fragment.html?raw"
+
 class FormatCode extends HTMLElement {
 	#block = false;
 	static get observedAttributes() {

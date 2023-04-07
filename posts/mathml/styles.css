@@ -1,11 +1,13 @@
-h1 {
-	font-size: 2rem;
-}
+@layer page {
+	h1 {
+		font-size: 2rem;
+	}
 
-h2 {
-	font-size: 1.5rem;
-}
+	h2 {
+		font-size: 1.5rem;
+	}
 
-strong {
-	font-weight: inherit;
+	strong {
+		font-weight: inherit;
+	}
 }

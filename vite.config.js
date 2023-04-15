@@ -3,6 +3,7 @@ import { defineConfig } from "vite";
 import path from "path";
 import fs from "fs";
 
+const root = "src";
 const mappings = {
 	"/posts/mathml": "/posts/mathml/index.html",
 };
@@ -28,16 +29,16 @@ const htmlExtFallback = {
 };
 
 export default defineConfig({
-	root: "src",
+	root,
 	build: {
-		outDir: "dist",
+		outDir: "../dist",
 		rollupOptions: {
 			input: {
-				main: resolve(__dirname, "src", "index.html"),
+				main: resolve(__dirname, root, "index.html"),
 				...Object.fromEntries(
 					Object.entries(mappings).map(([key, value]) => [
-						key.replace("/", "src/"),
-						value.replace("/", "src/"),
+						key.replace("/", `${root}/`),
+						value.replace("/", `${root}/`),
 					])
 				),
 			},

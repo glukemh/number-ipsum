@@ -1,6 +1,6 @@
-@layer base, page, section;
+@layer octonion, quaternion, complex, real;
 
-@layer base {
+@layer octonion {
 	*,
 	::before,
 	::after {

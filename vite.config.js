@@ -28,14 +28,16 @@ const htmlExtFallback = {
 };
 
 export default defineConfig({
+	root: "src",
 	build: {
+		outDir: "dist",
 		rollupOptions: {
 			input: {
-				main: resolve(__dirname, "index.html"),
+				main: resolve(__dirname, "src", "index.html"),
 				...Object.fromEntries(
 					Object.entries(mappings).map(([key, value]) => [
-						key.replace("/", ""),
-						value.replace("/", ""),
+						key.replace("/", "src/"),
+						value.replace("/", "src/"),
 					])
 				),
 			},

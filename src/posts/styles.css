@@ -1,0 +1,22 @@
+@layer quaternion {
+	h1 {
+		font-size: 2rem;
+	}
+
+	h2 {
+		font-size: 1.5rem;
+	}
+
+	strong {
+		font-weight: inherit;
+	}
+
+	main {
+		display: grid;
+		grid-template-columns: minmax(3ch, 1fr) minmax(10ch, 120ch) minmax(3ch, 1fr);
+	}
+
+	article {
+		grid-column: 2;
+	}
+}

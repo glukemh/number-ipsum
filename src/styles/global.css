@@ -95,11 +95,23 @@
 
 	@media (prefers-color-scheme: light) {
 		:root {
-			--color-accent-color: slateblue;
-			--color-active-text: #727082;
-			--color-canvas: snow;
-			--color-canvas-text: #3d3d43;
-			--color-field: #f5efef;
+			--color-accent-color: lch(70% 60 275);
+			--color-accent-color-text: accentColorText;
+			--color-active-text: lch(30% 20 325);
+			--color-button-border: buttonBorder;
+			--color-button-face: buttonFace;
+			--color-button-text: buttonText;
+			--color-canvas: lch(95% 5 256);
+			--color-canvas-text: lch(20% 5 256);
+			--color-field: #444255;
+			--color-field-text: fieldText;
+			--color-gray-text: grayText;
+			--color-highlight: highlight;
+			--color-highlight-text: highlightText;
+			--color-link-text: lch(25% 60 275);
+			--color-mark: mark;
+			--color-mark-text: markText;
+			--color-visited-text: lch(50% 5 275);
 		}
 	}
 

@@ -8,10 +8,23 @@
 	}
 
 	:root {
-		--primary-bg-color: #1c1b22;
-		--primary-contrast-bg-color: #444255;
-		--primary-color: cornflowerblue;
-		--neutral-color: azure;
+		--color-accent-color: lch(70% 60 275);
+		--color-accent-color-text: accentColorText;
+		--color-active-text: lch(70% 15 325);
+		--color-button-border: buttonBorder;
+		--color-button-face: buttonFace;
+		--color-button-text: buttonText;
+		--color-canvas: lch(5% 5 256);
+		--color-canvas-text: lch(96% 5 256);
+		--color-field: #444255;
+		--color-field-text: fieldText;
+		--color-gray-text: grayText;
+		--color-highlight: highlight;
+		--color-highlight-text: highlightText;
+		--color-link-text: lch(70% 60 275);
+		--color-mark: mark;
+		--color-mark-text: markText;
+		--color-visited-text: lch(95% 15 275);
 
 		color-scheme: light dark;
 	}
@@ -26,22 +39,24 @@
 	}
 
 	body {
-		color: var(--neutral-color);
-		background-color: var(--primary-bg-color);
+		color: var(--color-canvas-text);
+		background-color: var(--color-canvas);
 	}
 
 	a {
-		color: var(--primary-color);
-		transition: filter 0.1s ease-in-out;
+		color: var(--color-link-text);
 		text-underline-offset: 0.1em;
+		transition-property: color, text-decoration-color;
+		transition-duration: 0.1s;
+		transition-timing-function: ease-in-out;
 	}
 
 	a:link {
-		text-decoration-color: var(--primary-color);
+		text-decoration-color: currentColor;
 	}
 
 	a:visited {
-		text-decoration-color: gainsboro;
+		text-decoration-color: var(--color-visited-text);
 	}
 
 	a:hover {
@@ -49,7 +64,18 @@
 	}
 
 	a:active {
-		filter: opacity(0.8);
+		color: var(--color-active-text);
+		text-decoration-color: currentColor;
+	}
+
+	:focus-visible {
+		outline: 0.125em solid var(--color-accent-color);
+		outline-offset: 0.125em;
+	}
+
+	::selection {
+		background-color: var(--color-accent-color);
+		color: var(--color-accent-color-text);
 	}
 
 	ul {
@@ -69,10 +95,54 @@
 
 	@media (prefers-color-scheme: light) {
 		:root {
-			--primary-bg-color: white;
-			--primary-contrast-bg-color: #f5efef;
-			--primary-color: darkslateblue;
-			--neutral-color: #3d3d43;
+			--color-accent-color: slateblue;
+			--color-active-text: #727082;
+			--color-canvas: snow;
+			--color-canvas-text: #3d3d43;
+			--color-field: #f5efef;
+		}
+	}
+
+	@media (forced-colors: active) {
+		:root {
+			--color-accent-color: accentColor;
+			--color-accent-color-text: accentColorText;
+			--color-active-text: activeText;
+			--color-button-border: buttonBorder;
+			--color-button-face: buttonFace;
+			--color-button-text: buttonText;
+			--color-canvas: canvas;
+			--color-canvas-text: canvasText;
+			--color-field: field;
+			--color-field-text: fieldText;
+			--color-gray-text: grayText;
+			--color-highlight: highlight;
+			--color-highlight-text: highlightText;
+			--color-link-text: linkText;
+			--color-mark: mark;
+			--color-mark-text: markText;
+			--color-visited-text: visitedText;
+		}
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		a {
+			transition-property: color, text-decoration-color, text-underline-offset;
+		}
+
+		:focus-visible {
+			animation: focus-visible 0.3s ease;
+		}
+	}
+
+	@keyframes focus-visible {
+		0% {
+			outline-color: transparent;
+			outline-offset: 0.625em;
+		}
+		100% {
+			outline-color: var(--color-accent-color);
+			outline-offset: 0.125em;
 		}
 	}
 }

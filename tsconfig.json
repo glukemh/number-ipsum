@@ -15,5 +15,5 @@
     "noImplicitReturns": true,
     "skipLibCheck": true
   },
-  "include": ["components", "./declarations.d.ts"]
+  "include": ["src", "./declarations.d.ts"]
 }

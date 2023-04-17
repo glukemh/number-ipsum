@@ -1,0 +1,7 @@
+@layer real {
+	a[href="/"] {
+		font-family: var(--font-family-math);
+		text-decoration: none;
+		font-size: 3rem;
+	}
+}

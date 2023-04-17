@@ -3,20 +3,23 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="icon" type="image/svg+xml" href="/assets/aleph.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MathML</title>
-  <link rel="stylesheet" href="/styles/global.css">
-  <link rel="stylesheet" href="/posts/styles.css">
+  <link rel="stylesheet" href="/assets/global.css" data-adopt>
+  <link rel="stylesheet" href="/assets/posts.css">
+  <script type="module" src="/scripts/adopt-sheets"></script>
+  <script type="module" src="/components/main-nav"></script>
   <script type="module" src="/components/format-code"></script>
 </head>
 
-<body>
+<body data-dontdelete>
+  <main-nav></main-nav>
   <main>
     <article>
       <section>
 
-        <h1 class="heading">Semantic Math</h1>
+        <h1 class="heading">Semantic Maths</h1>
         <p>
           MathML is a markup language for describing mathematical notation and
           capturing both its structure and content. The standard makes it possible
@@ -34,7 +37,8 @@
       <section>
         <h2 class="heading">Math in HTML</h2>
         <p>
-          For starters, let's see how we write <math>
+          For starters, let's see how we write
+          <math>
             <mrow>
               <mi>y</mi>
               <mo>=</mo>
@@ -45,7 +49,8 @@
               <mo>-</mo>
               <mn>4</mn>
             </mrow>
-          </math>. This markup uses the <code>&lt;math&gt;</code> element, and
+          </math>.
+          This markup uses the <code>&lt;math&gt;</code> element, and
           looks like the following if you inspect this document.
         </p>
         <format-code block>

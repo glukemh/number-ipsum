@@ -54,6 +54,8 @@ class FormatCode extends HTMLElement {
 	}
 }
 
-customElements.define("format-code", FormatCode);
+if (!customElements.get("format-code")) {
+	customElements.define("format-code", FormatCode);
+}
 
 export default FormatCode;

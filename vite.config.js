@@ -28,6 +28,7 @@ const htmlExtFallback = {
 	},
 };
 
+// clean urls
 export default defineConfig({
 	root,
 	build: {

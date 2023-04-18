@@ -1,14 +1,20 @@
-// import template from "./template.fragment.html?raw"
+import styles from "./styles.css?raw";
+
+const style = document.createElement("style");
+style.textContent = styles;
 
 class FormatCode extends HTMLElement {
 	#block = false;
+	#html = false;
+	shadow: ShadowRoot;
 	static get observedAttributes() {
-		return ["block"];
+		return ["block", "html"];
 	}
 
 	constructor() {
 		super();
-		this.attachShadow({ mode: "open" });
+		this.shadow = this.attachShadow({ mode: "open" });
+		this.shadow.adoptedStyleSheets = [...document.adoptedStyleSheets];
 	}
 
 	connectedCallback() {
@@ -21,14 +27,19 @@ class FormatCode extends HTMLElement {
 				return line.slice(1);
 			});
 		}
-		const codeText = document.createTextNode(this.innerHTML);
+		const codeText = document.createTextNode("");
 		codeText.textContent = lines.join("\n").replace(/^\s+|\s+$/g, "");
 		const pre = document.createElement("pre");
 		const code = document.createElement("code");
-		code.appendChild(codeText);
+		if (this.html) {
+			code.innerHTML = codeText.textContent || "";
+		} else {
+			code.appendChild(codeText);
+		}
 		pre.appendChild(code);
 		pre.style.display = this.block ? "block" : "inline";
-		this.shadowRoot?.appendChild(pre);
+		this.shadow.appendChild(style.cloneNode(true));
+		this.shadow.appendChild(pre);
 	}
 
 	attributeChangedCallback(
@@ -38,6 +49,8 @@ class FormatCode extends HTMLElement {
 	) {
 		if (name === "block") {
 			this.block = newValue;
+		} else if (name === "html") {
+			this.html = newValue;
 		}
 	}
 
@@ -48,9 +61,25 @@ class FormatCode extends HTMLElement {
 	set block(value) {
 		this.#block = value !== null && value !== false;
 		const display = this.#block ? "block" : "inline";
-		this.shadowRoot
-			?.querySelector("pre")
+		this.shadow
+			.querySelector("pre")
 			?.setAttribute("style", `display: ${display}`);
+	}
+
+	get html() {
+		return this.#html;
+	}
+
+	set html(value) {
+		this.#html = value !== null && value !== false;
+		const code = this.shadow.querySelector("code");
+		if (code) {
+			if (this.#html) {
+				code.innerHTML = code.textContent || "";
+			} else {
+				code.textContent = code.innerHTML;
+			}
+		}
 	}
 }
 

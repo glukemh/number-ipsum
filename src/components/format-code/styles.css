@@ -1,0 +1,17 @@
+@layer real {
+	:host([block]),
+	:host([block]) pre {
+		display: block;
+	}
+
+	:host([block]) code {
+		padding: 0.5em 1em;
+	}
+
+	code {
+		display: inline-block;
+		backdrop-filter: invert(0.2);
+		border-radius: 0.25em;
+		padding-inline: 0.5em;
+	}
+}

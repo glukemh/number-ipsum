@@ -19,4 +19,9 @@
 	article {
 		grid-column: 2;
 	}
+
+	main-nav:not(:defined) {
+		display: block;
+		height: 95px;
+	}
 }

@@ -1,0 +1,84 @@
+@layer octonion, quaternion, complex, real;
+
+@layer octonion {
+	*,
+	::before,
+	::after {
+		box-sizing: border-box;
+	}
+
+	::selection {
+		background-color: var(--color-accent-color);
+		color: var(--color-accent-color-text);
+	}
+
+	:focus-visible {
+		outline: 0.125rem solid var(--color-accent-color);
+		outline-offset: 0.125em;
+	}
+
+	a {
+		color: var(--color-link-text);
+		text-underline-offset: 0.1em;
+		transition-property: color, text-decoration-color;
+		transition-duration: 0.1s;
+		transition-timing-function: ease-in-out;
+	}
+
+	a:link {
+		text-decoration-color: currentColor;
+	}
+
+	a:visited {
+		text-decoration-color: var(--color-visited-text);
+	}
+
+	a:hover {
+		text-underline-offset: 0.3em;
+	}
+
+	a:active {
+		color: var(--color-active-text);
+		text-decoration-color: currentColor;
+	}
+
+	ul {
+		list-style: none;
+	}
+
+	button {
+		background: none;
+		border: none;
+		cursor: pointer;
+	}
+
+	.heading {
+		letter-spacing: 0.1em;
+		font-weight: bold;
+	}
+
+	math {
+		font-family: var(--font-family-math);
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		a {
+			transition-property: color, text-decoration-color, text-underline-offset;
+		}
+
+		:focus-visible {
+			animation: focus-visible 0.3s ease;
+		}
+	}
+
+	@keyframes focus-visible {
+		0% {
+			outline-color: transparent;
+			outline-offset: 0.625em;
+		}
+		100% {
+			outline-color: var(--color-accent-color);
+			outline-offset: 0.125em;
+		}
+	}
+}

@@ -6,14 +6,15 @@
   <link rel="icon" type="image/svg+xml" href="/assets/aleph.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MathML</title>
-  <link rel="stylesheet" href="/assets/global.css" data-adopt>
-  <link rel="stylesheet" href="/assets/posts.css">
-  <script type="module" src="/scripts/adopt-sheets"></script>
+  <link rel="stylesheet" href="/assets/global.css">
+  <link rel="stylesheet" href="/posts/styles.css">
+  <link rel="stylesheet" href="/posts/mathml.css">
+  <script type="module" src="/assets/adopt-sheets"></script>
   <script type="module" src="/components/main-nav"></script>
   <script type="module" src="/components/format-code"></script>
 </head>
 
-<body data-dontdelete>
+<body>
   <main-nav></main-nav>
   <main>
     <article>
@@ -50,7 +51,7 @@
               <mn>4</mn>
             </mrow>
           </math>.
-          This markup uses the <code>&lt;math&gt;</code> element, and
+          This markup uses the <format-code html>&lt;math&gt;</format-code> element, and
           looks like the following if you inspect this document.
         </p>
         <format-code block>

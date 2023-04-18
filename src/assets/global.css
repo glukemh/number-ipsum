@@ -1,12 +1,6 @@
 @layer octonion, quaternion, complex, real;
 
 @layer octonion {
-	*,
-	::before,
-	::after {
-		box-sizing: border-box;
-	}
-
 	:root {
 		--color-accent-color: lch(70% 60 275);
 		--color-accent-color-text: accentColorText;
@@ -43,56 +37,6 @@
 	body {
 		color: var(--color-canvas-text);
 		background-color: var(--color-canvas);
-	}
-
-	a {
-		color: var(--color-link-text);
-		text-underline-offset: 0.1em;
-		transition-property: color, text-decoration-color;
-		transition-duration: 0.1s;
-		transition-timing-function: ease-in-out;
-	}
-
-	a:link {
-		text-decoration-color: currentColor;
-	}
-
-	a:visited {
-		text-decoration-color: var(--color-visited-text);
-	}
-
-	a:hover {
-		text-underline-offset: 0.3em;
-	}
-
-	a:active {
-		color: var(--color-active-text);
-		text-decoration-color: currentColor;
-	}
-
-	:focus-visible {
-		outline: 0.125rem solid var(--color-accent-color);
-		outline-offset: 0.125em;
-	}
-
-	::selection {
-		background-color: var(--color-accent-color);
-		color: var(--color-accent-color-text);
-	}
-
-	ul {
-		list-style: none;
-	}
-
-	button {
-		background: none;
-		border: none;
-		cursor: pointer;
-	}
-
-	.heading {
-		letter-spacing: 0.1em;
-		font-weight: bold;
 	}
 
 	@media (prefers-color-scheme: light) {
@@ -136,27 +80,6 @@
 			--color-mark: mark;
 			--color-mark-text: markText;
 			--color-visited-text: visitedText;
-		}
-	}
-
-	@media (prefers-reduced-motion: no-preference) {
-		a {
-			transition-property: color, text-decoration-color, text-underline-offset;
-		}
-
-		:focus-visible {
-			animation: focus-visible 0.3s ease;
-		}
-	}
-
-	@keyframes focus-visible {
-		0% {
-			outline-color: transparent;
-			outline-offset: 0.625em;
-		}
-		100% {
-			outline-color: var(--color-accent-color);
-			outline-offset: 0.125em;
 		}
 	}
 }

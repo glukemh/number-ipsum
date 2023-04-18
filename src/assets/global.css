@@ -13,8 +13,8 @@
 		--color-field: #444255;
 		--color-field-text: fieldText;
 		--color-gray-text: grayText;
-		--color-highlight: highlight;
-		--color-highlight-text: highlightText;
+		--color-highlight: lch(87% 30 68);
+		--color-highlight-text: lch(30% 30 68);
 		--color-link-text: lch(70% 60 275);
 		--color-mark: mark;
 		--color-mark-text: markText;

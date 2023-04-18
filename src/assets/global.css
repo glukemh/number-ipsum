@@ -20,7 +20,7 @@
 		--color-mark-text: markText;
 		--color-visited-text: lch(95% 15 275);
 
-		--font-family-math: "Cambria Math", "IBM Plex Mono", monospace;
+		--font-family-math: "Symbol", "Cambria Math";
 
 		color-scheme: light dark;
 	}

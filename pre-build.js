@@ -6,7 +6,6 @@ const root = "src/";
 const exclude = new Set(
 	["assets", "components"].map((dir) => path.join(root, dir))
 );
-exclude.add(null);
 
 const entryPoints = await getEntryPoints(root);
 fs.writeFileSync("entry-points.json", JSON.stringify(entryPoints, null, 2));
@@ -22,11 +21,13 @@ async function getFiles(dir) {
 }
 
 async function getEntryPoints(dir) {
-	if (await isFile(dir)) return dir.endsWith(".html") ? dir : null;
+	if (await isFile(dir)) return dir;
 	const files = await getFiles(dir);
 	return (
 		await Promise.all(
 			files.filter((file) => !exclude.has(file)).map(getEntryPoints)
 		)
-	).flat();
+	)
+		.flat()
+		.filter((file) => file.endsWith(".html"));
 }

@@ -23,10 +23,12 @@ const htmlExtFallback = {
 
 const entryPoints = JSON.parse(fs.readFileSync("entry-points.json", "utf-8"));
 
-// clean urls
 export default defineConfig({
 	root,
 	publicDir: root + "/assets",
+	optimizeDeps: {
+		include: [],
+	},
 	build: {
 		emptyOutDir: true,
 		outDir: "../dist",

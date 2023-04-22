@@ -1,6 +1,6 @@
 import styles from "./styles.css?raw";
 import templateContent from "./template.fragment.html?raw";
-import ReactiveEl from "../reactive-el";
+import PivotEl from "../pivot-el";
 
 const template = document.createElement("template");
 template.innerHTML = templateContent;
@@ -8,26 +8,27 @@ const style = document.createElement("style");
 style.textContent = styles;
 template.content.prepend(style);
 
-class MainNav extends ReactiveEl {
-	#pageTitle: string | null = null;
-	#random: number = 0;
+class MainNav extends PivotEl {
+	#pageTitle: string = "";
+	#random: number = Math.random();
 	static template = template;
 
 	constructor() {
 		super();
 		this.pageTitle = document.title;
+		this.random = this.random;
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
 	}
 
-	set pageTitle(value: string | null) {
+	set pageTitle(value: string) {
 		this.#pageTitle = value;
-		super.set("pageTitle", value);
+		this.pivot("pageTitle", new Text(value));
 	}
 
-	get pageTitle(): string | null {
+	get pageTitle(): string {
 		return this.#pageTitle;
 	}
 
@@ -37,7 +38,9 @@ class MainNav extends ReactiveEl {
 
 	set random(value: number) {
 		this.#random = value;
-		super.set("random", value.toString());
+		const attr = this.get("random") as Attr;
+		attr.value = value.toString();
+		this.pivot("random");
 	}
 }
 

@@ -15,32 +15,15 @@ class MainNav extends PivotEl {
 
 	constructor() {
 		super();
-		this.pageTitle = document.title;
-		this.random = this.random;
+		const title = new Text(document.title);
+		this.pivot("pageTitle", title);
+		this.pivot("random", (n) => {
+			n.textContent = n.nodeName + 3;
+		});
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
-	}
-
-	set pageTitle(value: string) {
-		this.#pageTitle = value;
-		this.pivot("pageTitle", new Text(value));
-	}
-
-	get pageTitle(): string {
-		return this.#pageTitle;
-	}
-
-	get random(): number {
-		return this.#random;
-	}
-
-	set random(value: number) {
-		this.#random = value;
-		const attr = this.get("random") as Attr;
-		attr.value = value.toString();
-		this.pivot("random");
 	}
 }
 

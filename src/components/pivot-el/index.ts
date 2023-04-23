@@ -12,47 +12,62 @@ type PositionedPivotVal = string | ToString | Element | Text;
 type Pivot = NamedPivot | PositionedPivot;
 type PivotVal = NamedPivotVal | PositionedPivotVal;
 
-const PivotMapMixin = (Base: Constructor) => {
+function PivotIndexMixin<Base extends Constructor>(Base: Base) {
 	return class PivotMap extends Base {
-		pivots = new Map<string, Pivot>();
+		index = new Map<string, Pivot>();
 		get(id: string) {
-			return this.pivots.get(id)?.node || null;
+			return this.index.get(id)?.node || null;
 		}
 
-		set(id: string, node: PivotNode) {
-			let pivot = this.pivots.get(id);
+		set(id: string, node: PivotNode | ((node: PivotNode) => PivotNode | void)) {
+			let pivot = this.index.get(id);
 			if (pivot) {
-				pivot.node = node;
-			} else if (node) {
-				if (node.nodeType === Node.ATTRIBUTE_NODE) {
-					pivot = new NamedPivot(node as Attr);
+				if (typeof node === "function") {
+					const resultNode = node(pivot.node);
+					if (resultNode) {
+						pivot.node = resultNode;
+					}
 				} else {
-					pivot = new PositionedPivot(node as Element | Text);
+					pivot.node = node;
 				}
-			} else {
-				throw new Error("Cannot set null node");
 			}
-			return this.pivots.set(id, pivot);
+			return this;
 		}
 
-		insert(id: string, pivot: Pivot) {
-			return this.pivots.set(id, pivot);
+		insert(id: string, node: Element | Text | Comment | Attr | NamedNodeMap) {
+			let pivot: Pivot;
+			if (
+				node instanceof Element ||
+				node instanceof Text ||
+				node instanceof Comment
+			) {
+				pivot = new PositionedPivot(node);
+			} else {
+				pivot = new NamedPivot(node);
+			}
+			this.index.set(id, pivot);
+			return this;
 		}
 
 		delete(id: string) {
-			return this.pivots.delete(id);
+			return this.index.delete(id);
 		}
 
-		pivot(id: string, value?: PivotNode) {
-			if (value !== undefined) this.set(id, value);
-			return this.pivots.get(id)?.pivot();
+		pivot(
+			id: string,
+			node?: PivotNode | ((node: PivotNode) => PivotNode | void)
+		) {
+			if (node !== undefined) this.set(id, node);
+			const pivot = this.index.get(id);
+			pivot?.pivot();
+			return pivot?.node;
 		}
 
 		hasConnection(id: string) {
-			return this.pivots.get(id)?.connected;
+			return this.index.get(id)?.connected;
 		}
 	};
-};
+}
 
 class NamedPivot {
 	#namedMap: NamedNodeMap;
@@ -102,7 +117,9 @@ class PositionedPivot {
 			case Node.ELEMENT_NODE:
 			case Node.TEXT_NODE:
 				if (!node.parentNode) throw new Error("Node must have a parent node");
-				this.#pivotNode = document.createComment(node.nodeName);
+				this.#pivotNode = document.createComment(
+					(node as Element).id || node.nodeName
+				);
 				node.parentNode.insertBefore(this.#pivotNode, node);
 				this.#node = node as Element | Text;
 				return;
@@ -116,10 +133,7 @@ class PositionedPivot {
 	}
 
 	set node(node: PositionedPivotNode) {
-		if (this.connected) {
-			this.#node.replaceWith(node);
-			return;
-		}
+		this.#node.replaceWith(node);
 		this.#node = node;
 	}
 
@@ -128,11 +142,10 @@ class PositionedPivot {
 	}
 
 	pivot() {
-		this.#pivotNode.parentNode?.insertBefore(
+		return this.#pivotNode.parentNode?.insertBefore(
 			this.#node,
 			this.#pivotNode.nextSibling
 		);
-		return this.connected;
 	}
 
 	remove() {
@@ -140,7 +153,7 @@ class PositionedPivot {
 	}
 }
 
-class PivotEl extends PivotMapMixin(HTMLElement) {
+class PivotEl extends PivotIndexMixin(HTMLElement) {
 	shadow: ShadowRoot;
 	content: Node;
 
@@ -189,20 +202,20 @@ class PivotEl extends PivotMapMixin(HTMLElement) {
 							);
 							ownerElement?.setAttributeNode(replacementAttr);
 							ownerElement?.removeAttributeNode(attr);
-							this.set(attr.value, replacementAttr);
-						} else if (attr.name === "id") {
-							this.set(attr.value, attr.ownerElement);
+							this.insert(attr.value, replacementAttr);
+						} else if (attr.name === "id" && attr.ownerElement) {
+							this.insert(attr.value, attr.ownerElement);
 						}
 					}
 					break;
 				case Node.COMMENT_NODE:
-					this.insert((n as Comment).data, new PositionedPivot(n as Comment));
+					this.insert((n as Comment).data, n as Comment);
 			}
 			n = nf.nextNode();
 		}
 	};
 }
 
-export { PivotEl, PivotMapMixin, PositionedPivot, NamedPivot };
+export { PivotEl, PivotIndexMixin, PositionedPivot, NamedPivot };
 
 export default PivotEl;

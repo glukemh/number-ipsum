@@ -9,8 +9,6 @@ style.textContent = styles;
 template.content.prepend(style);
 
 class MainNav extends PivotEl {
-	#pageTitle: string = "";
-	#random: number = Math.random();
 	static template = template;
 
 	constructor() {

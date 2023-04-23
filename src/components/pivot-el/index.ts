@@ -1,16 +1,11 @@
-// type EventHandler = (e: Event) => void;
 type PivotElProps = { template?: Template; adoptStyles?: boolean };
 type Constructor = new (...args: any[]) => any;
 type Template = Node | HTMLTemplateElement | string;
 type SubclassAttributes = { template: Template };
-type ToString = { toString(): string };
 type PivotNode = Element | Attr | Text;
 type NamedPivotNode = Attr;
-type NamedPivotVal = string | ToString | Attr;
 type PositionedPivotNode = Element | Text;
-type PositionedPivotVal = string | ToString | Element | Text;
 type Pivot = NamedPivot | PositionedPivot;
-type PivotVal = NamedPivotVal | PositionedPivotVal;
 
 function PivotIndexMixin<Base extends Constructor>(Base: Base) {
 	return class PivotMap extends Base {

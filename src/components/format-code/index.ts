@@ -1,23 +1,31 @@
+import hljs from "highlight.js";
+import highlighStyles from "highlight.js/styles/github.css?raw";
+
+import PivotElement from "../pivot-element";
 import styles from "./styles.css?raw";
 
-const style = document.createElement("style");
-style.textContent = styles;
+const sheet = new CSSStyleSheet();
+sheet.replaceSync(styles);
 
-class FormatCode extends HTMLElement {
-	#block = false;
-	#html = false;
-	shadow: ShadowRoot;
-	static get observedAttributes() {
-		return ["block", "html"];
-	}
+const highlightSheet = new CSSStyleSheet();
+highlightSheet.replaceSync(`@layer real { ${highlighStyles} }`);
 
+class FormatCode extends PivotElement {
+	language = "html";
+	static template = `<pre><code id="code"></code></pre>`;
+	code = this.index.code as HTMLElement;
 	constructor() {
 		super();
-		this.shadow = this.attachShadow({ mode: "open" });
-		this.shadow.adoptedStyleSheets = [...document.adoptedStyleSheets];
+		this.shadow.adoptedStyleSheets = [
+			...document.adoptedStyleSheets,
+			highlightSheet,
+			sheet,
+		];
+		console.debug(this.code);
 	}
 
 	connectedCallback() {
+		super.connectedCallback();
 		let text = this.innerHTML;
 		text = text.trimEnd().replace(/^\n/, "");
 		let lines = text.split("\n");
@@ -27,59 +35,16 @@ class FormatCode extends HTMLElement {
 				return line.slice(1);
 			});
 		}
-		const codeText = document.createTextNode("");
-		codeText.textContent = lines.join("\n").replace(/^\s+|\s+$/g, "");
-		const pre = document.createElement("pre");
-		const code = document.createElement("code");
-		if (this.html) {
-			code.innerHTML = codeText.textContent || "";
-		} else {
-			code.appendChild(codeText);
+		text = lines.join("\n").replace(/^\s+|\s+$/g, "");
+		if (this.language === "html") {
+			text = this.replaceHTML(text);
 		}
-		pre.appendChild(code);
-		pre.style.display = this.block ? "block" : "inline";
-		this.shadow.appendChild(style.cloneNode(true));
-		this.shadow.appendChild(pre);
+		text = hljs.highlight(text, { language: this.language }).value;
+		this.code.innerHTML = text;
 	}
 
-	attributeChangedCallback(
-		name: string,
-		_oldValue: boolean,
-		newValue: boolean
-	) {
-		if (name === "block") {
-			this.block = newValue;
-		} else if (name === "html") {
-			this.html = newValue;
-		}
-	}
-
-	get block() {
-		return this.#block;
-	}
-
-	set block(value) {
-		this.#block = value !== null && value !== false;
-		const display = this.#block ? "block" : "inline";
-		this.shadow
-			.querySelector("pre")
-			?.setAttribute("style", `display: ${display}`);
-	}
-
-	get html() {
-		return this.#html;
-	}
-
-	set html(value) {
-		this.#html = value !== null && value !== false;
-		const code = this.shadow.querySelector("code");
-		if (code) {
-			if (this.#html) {
-				code.innerHTML = code.textContent || "";
-			} else {
-				code.textContent = code.innerHTML;
-			}
-		}
+	replaceHTML(html: string) {
+		return html.replaceAll("&lt;", "<").replaceAll("&gt;", ">");
 	}
 }
 

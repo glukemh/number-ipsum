@@ -4,6 +4,10 @@
 		display: block;
 	}
 
+	:host(:not([block])) pre {
+		display: inline;
+	}
+
 	:host([block]) code {
 		padding: 0.5em 1em;
 	}
@@ -13,5 +17,9 @@
 		backdrop-filter: invert(0.2);
 		border-radius: 0.25em;
 		padding-inline: 0.5em;
+	}
+
+	.hljs-name {
+		color: var(--color-accent-color);
 	}
 }

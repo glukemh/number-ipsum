@@ -11,7 +11,7 @@ const highlightSheet = new CSSStyleSheet();
 highlightSheet.replaceSync(`@layer real { ${highlighStyles} }`);
 
 class FormatCode extends PivotElement {
-	language = "html";
+	language = "xml";
 	static template = `<pre><code id="code"></code></pre>`;
 	code = this.index.code as HTMLElement;
 	constructor() {
@@ -21,7 +21,6 @@ class FormatCode extends PivotElement {
 			highlightSheet,
 			sheet,
 		];
-		console.debug(this.code);
 	}
 
 	connectedCallback() {
@@ -36,7 +35,7 @@ class FormatCode extends PivotElement {
 			});
 		}
 		text = lines.join("\n").replace(/^\s+|\s+$/g, "");
-		if (this.language === "html") {
+		if (this.language === "xml") {
 			text = this.replaceHTML(text);
 		}
 		text = hljs.highlight(text, { language: this.language }).value;

@@ -1,2 +1,7 @@
 @layer complex {
+	format-code:not(:defined) {
+		background-color: var(--color-field);
+		color: var(--color-field);
+		border-radius: 3px;
+	}
 }

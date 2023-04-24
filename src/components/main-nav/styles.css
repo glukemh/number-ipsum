@@ -1,4 +1,21 @@
 @layer real {
+	nav {
+		display: grid;
+		grid-template-columns: minmax(min-content, 1fr) max-content minmax(
+				min-content,
+				1fr
+			);
+		padding: 1rem;
+	}
+
+	nav > :first-child {
+		justify-self: start;
+	}
+
+	nav > :last-child {
+		justify-self: end;
+	}
+
 	a[href="/"] {
 		font-family: var(--font-family-math);
 		text-decoration: none;

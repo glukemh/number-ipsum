@@ -13,7 +13,9 @@ class MainNav extends PivotElement {
 			this.styleSheet,
 		];
 		this.styleSheet.replaceSync(styles);
-		this.index.pageTitle.textContent = document.title;
+		if (this.index.pageTitle) {
+			this.index.pageTitle.textContent = document.title;
+		}
 	}
 }
 

@@ -1,9 +1,6 @@
 import { defineConfig } from "vite";
 import path from "path";
 import fs from "fs";
-
-// import fs from "fs";
-// import path from "path";
 import { promisify } from "util";
 
 const root = "src";

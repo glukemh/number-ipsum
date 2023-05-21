@@ -2,7 +2,16 @@ import { defineConfig } from "vite";
 import path from "path";
 import fs from "fs";
 
+// import fs from "fs";
+// import path from "path";
+import { promisify } from "util";
+
 const root = "src";
+const exclude = new Set(
+	["assets", "components"].map((dir) => path.join(root, dir))
+);
+
+const entryPoints = await getEntryPoints(root);
 
 const htmlExtFallback = {
 	name: "html-ext-fallback",
@@ -21,8 +30,6 @@ const htmlExtFallback = {
 	},
 };
 
-const entryPoints = JSON.parse(fs.readFileSync("entry-points.json", "utf-8"));
-
 export default defineConfig({
 	root,
 	publicDir: root + "/assets",
@@ -31,7 +38,7 @@ export default defineConfig({
 	},
 	build: {
 		emptyOutDir: true,
-		outDir: "../dist",
+		outDir: path.join(__dirname, "dist"),
 		target: "esnext",
 		rollupOptions: {
 			input: entryPoints,
@@ -39,3 +46,25 @@ export default defineConfig({
 	},
 	plugins: [htmlExtFallback],
 });
+
+async function isFile(path) {
+	const stat = await promisify(fs.stat)(path);
+	return stat.isFile();
+}
+
+async function getFiles(dir) {
+	const files = await promisify(fs.readdir)(dir);
+	return files.map((file) => path.join(dir, file));
+}
+
+async function getEntryPoints(dir) {
+	if (await isFile(dir)) return dir;
+	const files = await getFiles(dir);
+	return (
+		await Promise.all(
+			files.filter((file) => !exclude.has(file)).map(getEntryPoints)
+		)
+	)
+		.flat()
+		.filter((file) => file.endsWith(".html"));
+}

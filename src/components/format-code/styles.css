@@ -1,4 +1,4 @@
-@layer real {
+@layer group {
 	:host([block]),
 	:host([block]) pre {
 		display: block;

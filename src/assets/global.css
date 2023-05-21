@@ -1,6 +1,6 @@
-@layer octonion, quaternion, complex, real;
+@layer field, ring, group;
 
-@layer octonion {
+@layer field {
 	:root {
 		--color-accent-color: lch(70% 60 275);
 		--color-accent-color-text: accentColorText;

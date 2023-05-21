@@ -1,30 +1,32 @@
 import hljs from "highlight.js";
-import highlighStyles from "highlight.js/styles/github.css?raw";
-
-import PivotElement from "../pivot-element";
+import highlightStyles from "highlight.js/styles/github.css?raw";
 import styles from "./styles.css?raw";
 
-const sheet = new CSSStyleSheet();
-sheet.replaceSync(styles);
+const template = document.createElement("template");
+template.innerHTML = `<pre><code></code></pre>`;
 
-const highlightSheet = new CSSStyleSheet();
-highlightSheet.replaceSync(`@layer real { ${highlighStyles} }`);
+class FormatCode extends HTMLElement {
+	static content = template.content;
+	static styles = [styles, `@layer group { ${highlightStyles} }`];
+	content = FormatCode.content.cloneNode(true) as DocumentFragment;
+	shadow = this.attachShadow({ mode: "open" });
+	code = this.content.querySelector("code") as HTMLElement;
+	styleSheet = new CSSStyleSheet();
+	language = this.getAttribute("language") || "xml";
 
-class FormatCode extends PivotElement {
-	language = "xml";
-	static template = `<pre><code id="code"></code></pre>`;
-	code = this.index.code as HTMLElement;
 	constructor() {
 		super();
+		for (const style of FormatCode.styles) {
+			this.styleSheet.insertRule(style);
+		}
 		this.shadow.adoptedStyleSheets = [
 			...document.adoptedStyleSheets,
-			highlightSheet,
-			sheet,
+			this.styleSheet,
 		];
+		this.shadow.append(this.content);
 	}
 
 	connectedCallback() {
-		super.connectedCallback();
 		let text = this.innerHTML;
 		text = text.trimEnd().replace(/^\n/, "");
 		let lines = text.split("\n");

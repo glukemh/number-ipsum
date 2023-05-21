@@ -1,6 +1,6 @@
-@layer octonion, quaternion, complex, real;
+@layer field, ring, group;
 
-@layer octonion {
+@layer field {
 	*,
 	::before,
 	::after {

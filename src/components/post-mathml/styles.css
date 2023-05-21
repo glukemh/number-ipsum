@@ -1,4 +1,4 @@
-@layer complex {
+@layer group {
 	format-code:not(:defined) {
 		background-color: var(--color-field);
 		color: var(--color-field);

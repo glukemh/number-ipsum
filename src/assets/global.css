@@ -23,6 +23,7 @@
 		--font-family-math: "Symbol", "Cambria Math";
 
 		color-scheme: light dark;
+		height: 100%;
 	}
 
 	html,
@@ -37,6 +38,8 @@
 	body {
 		color: var(--color-canvas-text);
 		background-color: var(--color-canvas);
+		min-height: 100%;
+		overflow-y: auto;
 	}
 
 	@media (prefers-color-scheme: light) {

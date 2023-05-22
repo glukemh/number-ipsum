@@ -1,0 +1,70 @@
+@layer group {
+	#scroll {
+		display: block;
+		width: 100vw;
+		height: 100vh;
+		overflow: scroll;
+		scroll-timeline: verticalTimeline vertical, horizontalTimeline horizontal;
+	}
+
+	#scroll::before {
+		content: "";
+		display: block;
+		height: 300%;
+		width: 300%;
+	}
+
+	ul {
+		position: sticky;
+		inset: 0;
+		height: 100%;
+		display: grid;
+		place-items: center;
+		margin: 0;
+		padding: 0;
+		animation-name: expandColumn, expandRow;
+		animation-duration: 1ms;
+		animation-timeline: horizontalTimeline, verticalTimeline;
+	}
+
+	li:first-child {
+		grid-column: 2;
+	}
+
+	li:nth-child(n + 2):nth-child(-n + 4) {
+		grid-row: 2;
+	}
+
+	li:last-child {
+		grid-column: 2;
+		grid-row: 3;
+	}
+
+	@keyframes expandColumn {
+		0% {
+			grid-template-columns: 1fr 0.1fr 0.1fr;
+		}
+
+		50% {
+			grid-template-columns: 0.1fr 1fr 0.1fr;
+		}
+
+		100% {
+			grid-template-columns: 0.1fr 0.1fr 1fr;
+		}
+	}
+
+	@keyframes expandRow {
+		0% {
+			grid-template-rows: 1fr 0.1fr 0.1fr;
+		}
+
+		50% {
+			grid-template-rows: 0.1fr 1fr 0.1fr;
+		}
+
+		100% {
+			grid-template-rows: 0.1fr 0.1fr 1fr;
+		}
+	}
+}

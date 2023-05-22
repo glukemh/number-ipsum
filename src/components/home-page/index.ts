@@ -23,8 +23,10 @@ class HomePage extends HTMLElement {
 		this.shadow.append(this.content);
 	}
 	connectedCallback() {
-		this.scrollEl.scrollLeft = this.scrollEl.getBoundingClientRect().width;
-		this.scrollEl.scrollTop = this.scrollEl.getBoundingClientRect().height;
+		this.scrollEl.scrollLeft =
+			(this.scrollEl.scrollWidth - this.scrollEl.clientWidth) / 2;
+		this.scrollEl.scrollTop =
+			(this.scrollEl.scrollHeight - this.scrollEl.clientHeight) / 2;
 	}
 }
 

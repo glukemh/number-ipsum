@@ -1,26 +1,14 @@
-import "/assets/adopt-sheets";
-import templateStr from "./template.fragment.html?raw";
+import "assets/adopt-sheets";
+import shadowElement from "assets/shadow-element";
+import templateStr from "./template.html?raw";
 import styles from "./styles.css?raw";
 
-const template = document.createElement("template");
-template.innerHTML = templateStr;
-
-class HomePage extends HTMLElement {
-	static content = template.content;
-	static styles = styles;
-	content = HomePage.content.cloneNode(true) as DocumentFragment;
-	shadow = this.attachShadow({ mode: "open" });
-	styleSheet = new CSSStyleSheet();
-	ul = this.content.querySelector("ul") as HTMLUListElement;
-	scrollEl = this.content.getElementById("scroll") as HTMLDivElement;
+class HomePage extends shadowElement(templateStr, styles) {
+	ul = this.shadow.querySelector("ul") as HTMLUListElement;
+	scrollEl = this.shadow.getElementById("scroll") as HTMLDivElement;
 	constructor() {
 		super();
-		this.styleSheet.replaceSync(HomePage.styles);
-		this.shadow.adoptedStyleSheets = [
-			...document.adoptedStyleSheets,
-			this.styleSheet,
-		];
-		this.shadow.append(this.content);
+		this.adoptStyleSheets(document.adoptedStyleSheets);
 	}
 	connectedCallback() {
 		this.scrollEl.scrollLeft =

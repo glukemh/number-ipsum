@@ -33,6 +33,12 @@ export default defineConfig({
 	optimizeDeps: {
 		include: [],
 	},
+	resolve: {
+		alias: {
+			"assets/": "/assets/",
+			"components/": "/components/",
+		},
+	},
 	build: {
 		emptyOutDir: true,
 		outDir: path.join(__dirname, "dist"),

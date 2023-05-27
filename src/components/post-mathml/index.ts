@@ -1,28 +1,10 @@
-import "/assets/adopt-sheets";
-import "/components/main-nav";
-import "/components/post-mathml-article";
-import postsStyles from "/assets/posts.css?raw";
-import templateStr from "./template.fragment.html?raw";
+import "components/format-code";
+import "components/page-post";
+import template from "./template.html?raw";
+import styles from "./styles.css?raw";
+import shadowElement from "assets/shadow-element";
 
-const template = document.createElement("template");
-template.innerHTML = templateStr;
-
-class PostMathML extends HTMLElement {
-	static content = template.content;
-	static styles = postsStyles;
-	content = PostMathML.content.cloneNode(true) as DocumentFragment;
-	styleSheet = new CSSStyleSheet();
-	shadow = this.attachShadow({ mode: "open" });
-	constructor() {
-		super();
-		this.shadow.adoptedStyleSheets = [
-			...document.adoptedStyleSheets,
-			this.styleSheet,
-		];
-		this.styleSheet.replaceSync(PostMathML.styles);
-		this.shadow.append(this.content);
-	}
-}
+const PostMathML = shadowElement(template, styles);
 
 if (!customElements.get("post-mathml")) {
 	customElements.define("post-mathml", PostMathML);

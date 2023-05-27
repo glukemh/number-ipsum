@@ -1,5 +1,5 @@
 import styles from "./styles.css?raw";
-import templateStr from "./template.fragment.html?raw";
+import templateStr from "./template.html?raw";
 import "/components/lo-go";
 
 const template = document.createElement("template");

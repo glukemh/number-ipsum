@@ -1,32 +1,15 @@
 import hljs from "highlight.js";
+import shadowElement from "assets/shadow-element";
 import highlightStyles from "highlight.js/styles/github.css?raw";
 import styles from "./styles.css?raw";
 
-const template = document.createElement("template");
-template.innerHTML = `<pre><code></code></pre>`;
-
-class FormatCode extends HTMLElement {
-	static content = template.content;
-	static styles = [styles, `@layer group { ${highlightStyles} }`];
-	content = FormatCode.content.cloneNode(true) as DocumentFragment;
-	shadow = this.attachShadow({ mode: "open" });
-	code = this.content.querySelector("code") as HTMLElement;
-	styleSheet = new CSSStyleSheet();
+class FormatCode extends shadowElement("<pre><code></code></pre>", styles) {
+	code = this.shadow.querySelector("code") as HTMLElement;
 	language = this.getAttribute("language") || "xml";
 
 	constructor() {
 		super();
-		for (const style of FormatCode.styles) {
-			this.styleSheet.insertRule(style);
-		}
-		this.shadow.adoptedStyleSheets = [
-			...document.adoptedStyleSheets,
-			this.styleSheet,
-		];
-		this.shadow.append(this.content);
-	}
-
-	connectedCallback() {
+		this.styleSheet.insertRule(`@layer group { ${highlightStyles} }`);
 		let text = this.innerHTML;
 		text = text.trimEnd().replace(/^\n/, "");
 		let lines = text.split("\n");

@@ -1,27 +1,18 @@
 import styles from "./styles.css?raw";
 import templateStr from "./template.html?raw";
 import "/components/lo-go";
+import shadowElement from "assets/shadow-element";
 
-const template = document.createElement("template");
-template.innerHTML = templateStr;
-
-class MainNav extends HTMLElement {
-	static content = template.content;
-	static styles = styles;
-	shadow = this.attachShadow({ mode: "open" });
-	styleSheet = new CSSStyleSheet();
-	content = MainNav.content.cloneNode(true) as DocumentFragment;
-	heading = this.content.querySelector("h1") as HTMLHeadingElement;
-	nav = this.content.querySelector("nav") as HTMLElement;
+class MainNav extends shadowElement(templateStr, styles) {
+	nav = this.shadow.querySelector("nav") as HTMLElement;
+	scrollTimeout: number | null = null;
+	lastScrollY = 0;
 	constructor() {
 		super();
 		this.shadow.adoptedStyleSheets = [
 			...document.adoptedStyleSheets,
-			this.styleSheet,
+			...this.shadow.adoptedStyleSheets,
 		];
-		this.styleSheet.replaceSync(MainNav.styles);
-		this.heading.textContent = document.title;
-		this.shadow.append(this.content);
 	}
 }
 

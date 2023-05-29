@@ -1,23 +1,16 @@
 @layer ring {
-	h1 {
-		font-size: 2rem;
-	}
-
-	h2 {
-		font-size: 1.5rem;
-	}
-
-	strong {
-		font-weight: inherit;
-	}
-
 	main {
 		display: grid;
-		grid-template-columns: minmax(3ch, 1fr) minmax(10ch, 120ch) minmax(3ch, 1fr);
+		grid-template-columns: 16px auto 16px;
 	}
 
-	article {
+	::slotted(*),
+	header {
 		grid-column: 2;
+	}
+
+	header {
+		text-align: center;
 	}
 
 	main-nav:not(:defined) {

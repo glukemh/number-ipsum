@@ -1,0 +1,37 @@
+@layer ring {
+	h1 {
+		font-size: 2rem;
+	}
+
+	h2 {
+		font-size: 1.5rem;
+	}
+
+	article {
+		display: grid;
+		grid-template-columns: minmax(min-content, 1fr) minmax(auto, 100ch) 1fr;
+		gap: 1rem;
+	}
+
+	section {
+		grid-column: 2;
+	}
+
+	h2 {
+		grid-column: 1;
+		justify-self: end;
+	}
+
+	h2 > :only-child {
+		position: sticky;
+		top: 1rem;
+	}
+
+	@media (width < 100ch) {
+		h2 {
+			grid-column: 2;
+			justify-self: start;
+			position: unset;
+		}
+	}
+}

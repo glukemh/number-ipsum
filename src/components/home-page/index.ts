@@ -1,14 +1,11 @@
-import "assets/adopt-sheets";
 import shadowElement from "assets/shadow-element";
-import templateStr from "./template.html?raw";
-import styles from "./styles.css?raw";
+import template from "./template.html?raw";
 
-class HomePage extends shadowElement(templateStr, styles) {
+class HomePage extends shadowElement(template) {
 	ul = this.shadow.querySelector("ul") as HTMLUListElement;
 	scrollEl = this.shadow.getElementById("scroll") as HTMLDivElement;
 	constructor() {
 		super();
-		this.adoptStyleSheets(document.adoptedStyleSheets);
 	}
 	connectedCallback() {
 		this.scrollEl.scrollLeft =

@@ -17,5 +17,8 @@
     "skipLibCheck": true,
     "baseUrl": "./src"
   },
-  "include": ["./src", "./declarations.d.ts"]
+  "include": ["./src/**/*.ts", "./declarations.d.ts"],
+  "watchOptions": {
+    "excludeDirectories": ["node_modules", "dist"],
+  }
 }

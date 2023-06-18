@@ -1,18 +1,11 @@
-import styles from "./styles.css?raw";
-import templateStr from "./template.html?raw";
 import "/components/lo-go";
 import shadowElement from "assets/shadow-element";
+import template from "./template.html?raw";
 
-class MainNav extends shadowElement(templateStr, styles) {
+class MainNav extends shadowElement(template) {
 	nav = this.shadow.querySelector("nav") as HTMLElement;
-	scrollTimeout: number | null = null;
-	lastScrollY = 0;
 	constructor() {
 		super();
-		this.shadow.adoptedStyleSheets = [
-			...document.adoptedStyleSheets,
-			...this.shadow.adoptedStyleSheets,
-		];
 	}
 }
 

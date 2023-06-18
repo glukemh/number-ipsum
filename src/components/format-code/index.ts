@@ -1,15 +1,20 @@
 import hljs from "highlight.js";
 import shadowElement from "assets/shadow-element";
 import highlightStyles from "highlight.js/styles/github.css?raw";
-import styles from "./styles.css?raw";
+import template from "./template.html?raw";
 
-class FormatCode extends shadowElement("<pre><code></code></pre>", styles) {
+class FormatCode extends shadowElement(template) {
 	code = this.shadow.querySelector("code") as HTMLElement;
 	language = this.getAttribute("language") || "xml";
+	highlightStyles = new CSSStyleSheet();
 
 	constructor() {
 		super();
-		this.styleSheet.insertRule(`@layer group { ${highlightStyles} }`);
+		this.highlightStyles.replaceSync(`@layer ring { ${highlightStyles} }`);
+		this.shadow.adoptedStyleSheets = [
+			...this.shadow.adoptedStyleSheets,
+			this.highlightStyles,
+		];
 		let text = this.innerHTML;
 		text = text.trimEnd().replace(/^\n/, "");
 		let lines = text.split("\n");

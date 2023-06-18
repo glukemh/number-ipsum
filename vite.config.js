@@ -45,17 +45,6 @@ export default defineConfig({
 		target: "esnext",
 		rollupOptions: {
 			input: entryPoints,
-			output: {
-				manualChunks: {},
-				assetFileNames: (assetInfo) => {
-					console.debug(assetInfo);
-					if (assetInfo.type === "asset") {
-						return "assets/[name][extname]";
-					} else {
-						return "[name][extname]";
-					}
-				},
-			},
 		},
 	},
 	plugins: [htmlExtFallback],

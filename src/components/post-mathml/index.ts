@@ -1,7 +1,7 @@
 import "components/format-code";
 import "components/page-post";
 import template from "./template.html?raw";
-import shadowElement from "assets/shadow-element.js";
+import shadowElement from "assets/mixins.js";
 
 const PostMathML = shadowElement(template);
 

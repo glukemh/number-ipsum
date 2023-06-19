@@ -1,5 +1,5 @@
 import hljs from "highlight.js";
-import shadowElement from "assets/shadow-element";
+import shadowElement from "assets/mixins";
 import highlightStyles from "highlight.js/styles/github.css?raw";
 import template from "./template.html?raw";
 

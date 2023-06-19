@@ -1,5 +1,5 @@
 import "components/main-nav";
-import shadowElement from "assets/shadow-element";
+import shadowElement from "assets/mixins";
 import template from "./template.html?raw";
 
 class PagePost extends shadowElement(template) {

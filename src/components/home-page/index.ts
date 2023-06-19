@@ -1,12 +1,15 @@
-import shadowElement from "assets/shadow-element";
+import shadowElement, { rangeTemplateMixin } from "assets/mixins";
 import template from "./template.html?raw";
 
-class HomePage extends shadowElement(template) {
+class HomePage extends rangeTemplateMixin(shadowElement(template)) {
+	ranges = this.getRangeMap(this.shadow);
 	ul = this.shadow.querySelector("ul") as HTMLUListElement;
-	scrollEl = this.shadow.getElementById("scroll") as HTMLDivElement;
+	scrollRange = this.ranges.get("scroll") as Range;
+	scrollEl = this.rangeElements(this.scrollRange).nextNode() as HTMLDivElement;
 	constructor() {
 		super();
 	}
+
 	connectedCallback() {
 		this.scrollEl.scrollLeft =
 			(this.scrollEl.scrollWidth - this.scrollEl.clientWidth) / 2;

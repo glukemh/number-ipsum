@@ -2,3 +2,6 @@
 node_modules
 dist
 entry-points.json
+
+# built by typescript
+build.js

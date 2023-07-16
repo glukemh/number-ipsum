@@ -1,4 +1,4 @@
-import shadowElement, { rangeTemplateMixin } from "assets/mixins";
+import shadowElement, { rangeTemplateMixin } from "/assets/mixins";
 import template from "./template.html?raw";
 
 class HomePage extends rangeTemplateMixin(shadowElement(template)) {

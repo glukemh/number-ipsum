@@ -1,5 +1,5 @@
 import "/components/lo-go";
-import shadowElement from "assets/mixins";
+import shadowElement from "/assets/mixins";
 import template from "./template.html?raw";
 
 class MainNav extends shadowElement(template) {

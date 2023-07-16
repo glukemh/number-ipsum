@@ -10,12 +10,16 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
-    "noEmit": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "skipLibCheck": true,
-    "baseUrl": "./src"
+    "outDir": "dist",
+    "baseUrl": "./",
+    "paths": {
+      "/*": ["src/*"]
+    }
+
   },
   "include": ["./src/**/*.ts", "./declarations.d.ts"],
   "watchOptions": {

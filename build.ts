@@ -1,6 +1,8 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
+import { exec } from "node:child_process";
 
+const watch = process.argv.includes("--watch");
 const root = "src";
 const elementName = "html-from";
 const replaceHtmlRegex = new RegExp(
@@ -29,9 +31,18 @@ class GraphNode {
 	hasDependency(node: GraphNode) {
 		return this.dependencies.has(node);
 	}
+
+	clearDependencies() {
+		this.dependencies.clear();
+	}
 }
 
 await copyTo(root, outDir, (name) => !name.endsWith(".ts"));
+exec("npm run tsc", (err) => {
+	if (err) {
+		console.error(err);
+	}
+});
 
 const htmlFiles = nodeMapFromFiles(root, ".html");
 buildDependencyGraph(root, htmlFiles);
@@ -45,6 +56,26 @@ if (cycle) {
 	console.log("build complete");
 }
 
+if (watch) {
+	console.log("watching for changes...");
+	fs.watch(root, { recursive: true }, (event, filePath) => {
+		switch (event) {
+			case "change":
+				if (filePath) {
+					handleFileChange(root, filePath, outDir);
+				}
+				break;
+		}
+	});
+	exec("npm run tsc -- --watch", (err, stdout) => {
+		console.log(stdout);
+		if (err) {
+			console.error("Error running tsc:", err);
+		}
+	});
+}
+
+// ~~~~~ functions ~~~~~
 async function copyTo(
 	from: string,
 	to: string,
@@ -63,6 +94,32 @@ async function copyTo(
 		} else if (file.isDirectory()) {
 			copyTo(filePath, outPath, filter);
 		}
+	}
+}
+
+function handleFileChange(root: string, filePath: string, outDir: string) {
+	if (filePath.endsWith(".html")) {
+		console.log(`rebuilding html ${filePath}...`);
+		const node = htmlFiles.get(filePath);
+		if (!node) {
+			console.warn(`File not indexed: ${filePath}`);
+			return;
+		}
+		setNodeDependencies(root, node, htmlFiles);
+		if (hasLocalCycle(node)) {
+			console.error(`Dependency cycle detected: ${node.name}`);
+			return;
+		}
+		buildFile(root, filePath, outDir);
+		console.log("done rebuilding");
+	} else if (!filePath.endsWith(".ts")) {
+		const outPath = path.join(outDir, filePath);
+		const rootPath = path.join(root, filePath);
+		console.log(`copying ${rootPath} to ${outPath}`);
+		if (!fs.existsSync(outPath)) {
+			fs.mkdirSync(path.dirname(outPath), { recursive: true });
+		}
+		fs.copyFileSync(rootPath, outPath);
 	}
 }
 
@@ -100,14 +157,14 @@ function nodeMapFromFiles(root: string, ext: string) {
 
 function buildDependencyGraph(root: string, nodeMap: Map<string, GraphNode>) {
 	for (const node of nodeMap.values()) {
-		addNodeDependencies(root, node, nodeMap);
+		setNodeDependencies(root, node, nodeMap);
 	}
 }
 
 function hasLocalCycle(
 	node: GraphNode,
-	visited: Set<GraphNode>,
-	stack: Set<GraphNode>
+	visited: Set<GraphNode> = new Set<GraphNode>(),
+	stack: Set<GraphNode> = new Set<GraphNode>()
 ) {
 	if (stack.has(node)) return true;
 	if (visited.has(node)) return false;
@@ -135,11 +192,12 @@ function hasCycle(nodeMap: Map<string, GraphNode>) {
 	return false;
 }
 
-function addNodeDependencies(
+function setNodeDependencies(
 	root: string,
 	node: GraphNode,
 	nodeMap: Map<string, GraphNode>
 ) {
+	node.clearDependencies();
 	const html = fs.readFileSync(path.join(root, node.name), {
 		encoding: "utf-8",
 	});

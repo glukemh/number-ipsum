@@ -4,10 +4,10 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"dev": "vite",
-		"build": "tsc && vite build && node ./copy-assets.js",
-		"watch": "tsc build.ts --module ESNext --target ESNext && node build.js",
-		"preview": "vite preview"
+		"dev": "tsc build.ts --module ESNext --target ESNext && node build.js --watch",
+		"build": "tsc build.ts --module ESNext --target ESNext && node build.js",
+		"tsc": "tsc",
+		"vite": "vite"
 	},
 	"devDependencies": {
 		"typescript": "^5.0.4",

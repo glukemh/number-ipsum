@@ -3,13 +3,6 @@ import path from "path";
 import fs from "fs";
 import { promisify } from "util";
 
-const root = "src";
-const exclude = new Set(
-	["assets", "components"].map((dir) => path.join(root, dir))
-);
-
-const entryPoints = await getEntryPoints(root);
-
 const htmlExtFallback = {
 	name: "html-ext-fallback",
 	configureServer(server) {
@@ -27,27 +20,22 @@ const htmlExtFallback = {
 	},
 };
 
+const root = "dist";
+const excludeEntryPoints = new Set(
+	["assets", "components"].map((dir) => path.join(root, dir))
+);
+const entryPoints = await getEntryPoints(root);
 export default defineConfig({
 	root,
+	plugins: [htmlExtFallback],
 	optimizeDeps: {
 		include: [],
 	},
-	resolve: {
-		alias: {
-			"assets/": "/assets/",
-			"components/": "/components/",
-		},
-	},
 	build: {
-		emptyOutDir: true,
-		outDir: path.join(__dirname, "dist"),
-		copyPublicDir: true,
-		target: "esnext",
 		rollupOptions: {
 			input: entryPoints,
 		},
 	},
-	plugins: [htmlExtFallback],
 });
 
 async function isFile(path) {
@@ -65,7 +53,7 @@ async function getEntryPoints(dir) {
 	const files = await getFiles(dir);
 	return (
 		await Promise.all(
-			files.filter((file) => !exclude.has(file)).map(getEntryPoints)
+			files.filter((file) => !excludeEntryPoints.has(file)).map(getEntryPoints)
 		)
 	)
 		.flat()

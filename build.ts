@@ -2,7 +2,12 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 
 const root = "src";
-const replaceHtmlRegex = /<html-src\s+((?:src)=".*")\s*>.*<\/html-src>/gs;
+const elementName = "html-from";
+const replaceHtmlRegex = new RegExp(
+	`<(?:${elementName})\\s+((?:src)=".*")\\s*>.*<\\/(?:${elementName})>`,
+	"gs"
+);
+const outDir = "dist";
 console.log("building...");
 
 class GraphNode {
@@ -25,6 +30,9 @@ class GraphNode {
 		return this.dependencies.has(node);
 	}
 }
+
+await copyTo(root, outDir, (name) => !name.endsWith(".ts"));
+
 const htmlFiles = nodeMapFromFiles(root, ".html");
 buildDependencyGraph(root, htmlFiles);
 let cycle = hasCycle(htmlFiles);
@@ -32,9 +40,30 @@ if (cycle) {
 	console.error(`Dependency cycle detected: ${cycle.name}`);
 } else {
 	for (const filePath of htmlFiles.keys()) {
-		buildFile(root, filePath, "dist");
+		buildFile(root, filePath, outDir);
 	}
 	console.log("build complete");
+}
+
+async function copyTo(
+	from: string,
+	to: string,
+	filter?: (name: string) => Boolean
+) {
+	const reader = fs.opendirSync(from);
+	for await (const file of reader) {
+		const filePath = path.join(from, file.name);
+		const outPath = path.join(to, file.name);
+		if (file.isFile() && (filter ? filter(file.name) : true)) {
+			const outDir = path.dirname(outPath);
+			if (!fs.existsSync(outDir)) {
+				fs.mkdirSync(outDir, { recursive: true });
+			}
+			fs.copyFileSync(filePath, outPath);
+		} else if (file.isDirectory()) {
+			copyTo(filePath, outPath, filter);
+		}
+	}
 }
 
 function buildFile(root: string, filePath: string, outDir: string) {
@@ -127,7 +156,8 @@ function addNodeDependencies(
 			attributes[key] = value;
 		}
 		if (attributes.src) {
-			const dependencyNode = nodeMap.get(path.join(root, attributes.src));
+			const relativePath = path.relative(root, path.join(root, attributes.src));
+			const dependencyNode = nodeMap.get(relativePath);
 			if (dependencyNode) {
 				node.addDependency(dependencyNode);
 			}

@@ -1,8 +1,7 @@
-import "/components/lo-go";
-import shadowElement from "/assets/mixins";
-import template from "./template.html?raw";
+import "./lo-go";
+import ShadowElement from "/assets/mixins";
 
-class MainNav extends shadowElement(template) {
+class MainNav extends ShadowElement {
 	nav = this.shadow.querySelector("nav") as HTMLElement;
 	constructor() {
 		super();

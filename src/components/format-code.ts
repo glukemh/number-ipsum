@@ -1,9 +1,10 @@
 import hljs from "highlight.js";
-import shadowElement from "/assets/mixins";
+import ShadowElement from "/assets/mixins";
 import highlightStyles from "highlight.js/styles/github.css?raw";
-import template from "./template.html?raw";
 
-class FormatCode extends shadowElement(template) {
+console.debug("hljs", hljs);
+
+class FormatCode extends ShadowElement {
 	code = this.shadow.querySelector("code") as HTMLElement;
 	language = this.getAttribute("language") || "xml";
 	highlightStyles = new CSSStyleSheet();

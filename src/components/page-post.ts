@@ -1,8 +1,7 @@
-import "/components/main-nav";
-import shadowElement from "/assets/mixins";
-import template from "./template.html?raw";
+import "./main-nav";
+import ShadowElement from "/assets/mixins";
 
-class PagePost extends shadowElement(template) {
+class PagePost extends ShadowElement {
 	heading = this.shadow.querySelector("h1") as HTMLHeadingElement;
 	static get observedAttributes() {
 		return ["article-title"];

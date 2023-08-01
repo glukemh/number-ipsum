@@ -1,10 +1,3 @@
-type ShadowElement = {
-	template?: string;
-	new (...args: any[]): HTMLElement & {
-		shadow: ShadowRoot;
-	};
-};
-
 type RangeTemplateMixin = {
 	new (...args: any[]): {
 		getRangeMap: (root: Node) => Map<string, Range>;
@@ -12,21 +5,26 @@ type RangeTemplateMixin = {
 	};
 };
 
-const range = document.createRange();
+export default class ShadowDOMElement extends HTMLElement {
+	shadow: ShadowRoot;
+	constructor() {
+		super();
 
-export default function shadowElement(template?: string): ShadowElement {
-	return class ShadowDOMElement extends HTMLElement {
-		static template = template;
-		shadow: ShadowRoot = this.attachShadow({ mode: "open" });
-		constructor() {
-			super();
-			if (ShadowDOMElement.template) {
-				this.shadow.append(
-					range.createContextualFragment(ShadowDOMElement.template)
-				);
-			}
+		if (this.shadowRoot) {
+			this.shadow = this.shadowRoot;
+		} else {
+			const template = this.querySelector(
+				"template[shadowrootmode]"
+			) as HTMLTemplateElement;
+			const attributeMode = template.getAttribute("shadowrootmode");
+			const mode: ShadowRootMode =
+				attributeMode === "open" || attributeMode === "closed"
+					? attributeMode
+					: "open";
+			this.shadow = this.attachShadow({ mode });
+			this.shadow.appendChild(template.content);
 		}
-	};
+	}
 }
 
 export const rangeTemplateMixin = <T extends new (...args: any[]) => any>(

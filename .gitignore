@@ -5,3 +5,4 @@ entry-points.json
 
 # built by typescript
 build.js
+server.js

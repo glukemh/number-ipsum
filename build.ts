@@ -5,8 +5,13 @@ import { exec } from "node:child_process";
 const watch = process.argv.includes("--watch");
 const root = "src";
 const elementName = "html-from";
+const shadowRoot = "shadow-root";
 const replaceHtmlRegex = new RegExp(
 	`<(?:${elementName})\\s+((?:src)=".*")\\s*>.*<\\/(?:${elementName})>`,
+	"gs"
+);
+const replaceShadowRegex = new RegExp(
+	`<(?:${shadowRoot})\\s+(?:(src=".*"))\\s*>.*<\\/(?:${shadowRoot})>`,
 	"gs"
 );
 const outDir = "dist";
@@ -201,19 +206,12 @@ function setNodeDependencies(
 	const html = fs.readFileSync(path.join(root, node.name), {
 		encoding: "utf-8",
 	});
-	const matches = html.matchAll(replaceHtmlRegex) || [];
-	for (const match of matches) {
-		const [, ...attributeMatches] = match;
-		const attributes = {
-			src: "",
-		};
-		for (const str of attributeMatches) {
-			const i = str.indexOf("=");
-			const key = str.slice(0, i);
-			const value = str.slice(i + 2, str.length - 1);
-			attributes[key] = value;
-		}
-		if (attributes.src) {
+	const attributesList = [
+		...elementAttributes(html, replaceHtmlRegex),
+		...elementAttributes(html, replaceShadowRegex),
+	];
+	for (const attributes of attributesList) {
+		if (typeof attributes.src === "string") {
 			const relativePath = path.relative(root, path.join(root, attributes.src));
 			const dependencyNode = nodeMap.get(relativePath);
 			if (dependencyNode) {
@@ -223,23 +221,47 @@ function setNodeDependencies(
 	}
 }
 
-function recursiveHtmlBundle(root: string, html: string) {
-	const [match] = html.matchAll(replaceHtmlRegex) || [];
-	if (!match) return html;
-	const [fullMatch, ...attributeMatches] = match;
-	const attributes = {
-		src: "",
-	};
-	for (const str of attributeMatches) {
+function elementAttributes(html: string, attributeMatch: RegExp) {
+	const matches = html.matchAll(attributeMatch) || [];
+	const attributesList: any[] = [];
+	for (const match of matches) {
+		const [, ...attributeMatches] = match;
+		attributesList.push(attributesFromStrings(attributeMatches));
+	}
+	return attributesList;
+}
+
+function attributesFromStrings(strings: string[]) {
+	const attributes: Record<string, string | true> = {};
+	for (const str of strings) {
 		const i = str.indexOf("=");
-		const key = str.slice(0, i);
-		const value = str.slice(i + 2, str.length - 1);
+		const key = i > -1 ? str.slice(0, i) : str;
+		const value = key === str || str.slice(i + 2, str.length - 1);
 		attributes[key] = value;
 	}
-	const fullPath = path.join(root, attributes.src);
-	let replacement = "";
-	if (fs.existsSync(fullPath)) {
-		replacement = fs.readFileSync(fullPath, "utf-8");
+	return attributes;
+}
+
+function recursiveHtmlBundle(root: string, html: string) {
+	const expressionsToMatch = [replaceHtmlRegex, replaceShadowRegex];
+	const matches = expressionsToMatch.map((regex) => {
+		const [match] = html.matchAll(regex) || [];
+		return match;
+	});
+	if (!matches.some(Boolean)) return html;
+	let replacedHtml = html;
+	for (const match of matches) {
+		if (!match) continue;
+		const [fullMatch, ...attributeMatches] = match;
+		const attributes = attributesFromStrings(attributeMatches);
+		if (typeof attributes.src !== "string")
+			throw new Error("src attribute not found");
+		const fullPath = path.join(root, attributes.src);
+		let replacement = "";
+		if (fs.existsSync(fullPath)) {
+			replacement = fs.readFileSync(fullPath, "utf-8");
+		}
+		replacedHtml = replacedHtml.replace(fullMatch, replacement);
 	}
-	return recursiveHtmlBundle(root, html.replace(fullMatch, replacement));
+	return recursiveHtmlBundle(root, replacedHtml);
 }

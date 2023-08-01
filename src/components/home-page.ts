@@ -1,11 +1,8 @@
-import shadowElement, { rangeTemplateMixin } from "/assets/mixins";
-import template from "./template.html?raw";
+import ShadowElement from "/assets/mixins.js";
 
-class HomePage extends rangeTemplateMixin(shadowElement(template)) {
-	ranges = this.getRangeMap(this.shadow);
+class HomePage extends ShadowElement {
 	ul = this.shadow.querySelector("ul") as HTMLUListElement;
-	scrollRange = this.ranges.get("scroll") as Range;
-	scrollEl = this.rangeElements(this.scrollRange).nextNode() as HTMLDivElement;
+	scrollEl = this.shadow.getElementById("scroll") as HTMLDivElement;
 	constructor() {
 		super();
 	}

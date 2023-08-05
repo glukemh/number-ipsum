@@ -1,5 +1,5 @@
 import hljs from "highlight.js";
-import ShadowElement from "/assets/mixins";
+import ShadowElement from "/assets/shadow-element";
 import highlightStyles from "highlight.js/styles/github.css?raw";
 
 console.debug("hljs", hljs);

@@ -1,5 +1,5 @@
 import "./lo-go";
-import ShadowElement from "/assets/mixins";
+import ShadowElement from "/assets/shadow-element";
 
 class MainNav extends ShadowElement {
 	nav = this.shadow.querySelector("nav") as HTMLElement;

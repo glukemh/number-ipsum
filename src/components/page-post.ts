@@ -1,5 +1,5 @@
 import "./main-nav";
-import ShadowElement from "/assets/mixins";
+import ShadowElement from "/assets/shadow-element";
 
 class PagePost extends ShadowElement {
 	heading = this.shadow.querySelector("h1") as HTMLHeadingElement;

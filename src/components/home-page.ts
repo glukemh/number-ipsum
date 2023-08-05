@@ -1,4 +1,4 @@
-import ShadowElement from "/assets/mixins.js";
+import ShadowElement from "/assets/shadow-element";
 
 class HomePage extends ShadowElement {
 	ul = this.shadow.querySelector("ul") as HTMLUListElement;

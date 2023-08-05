@@ -1,6 +1,6 @@
 import "./format-code";
 import "./page-post";
-import ShadowElement from "/assets/mixins.js";
+import ShadowElement from "/assets/shadow-element";
 
 class PostMathML extends ShadowElement {
 	constructor() {

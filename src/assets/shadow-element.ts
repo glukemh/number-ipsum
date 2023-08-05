@@ -7,7 +7,7 @@ export default class ShadowDOMElement extends HTMLElement {
 			this.shadow = this.shadowRoot;
 		} else {
 			const template = this.querySelector(
-				"template[shadowrootmode]"
+				":scope > template[shadowrootmode]"
 			) as HTMLTemplateElement;
 			const attributeMode = template.getAttribute("shadowrootmode");
 			const mode: ShadowRootMode =

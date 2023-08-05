@@ -21,7 +21,7 @@
     }
 
   },
-  "include": ["./src/**/*.ts", "./declarations.d.ts"],
+  "include": ["./src/**/*.ts"],
   "watchOptions": {
     "excludeDirectories": ["node_modules", "dist"],
   }

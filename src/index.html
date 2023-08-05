@@ -6,15 +6,16 @@
   <link rel="icon" type="image/svg+xml" href="/assets/aleph.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Number Ipsum</title>
+  <script type="importmap">
+    <re-place src="/assets/importmap.json"></re-place>
+  </script>
   <link rel="stylesheet" href="/assets/global.css">
-  <script type="module" src="/components/home-page/index.js" async></script>
+  <script type="module" src="/components/home-page.js" async></script>
 </head>
 
 <body>
   <home-page>
-    <template shadowrootmode="open">
-      <html-from src="/assets/home-page.html"></html-from>
-    </template>
+    <shadow-root src="/assets/home-page.html"></shadow-root>
   </home-page>
 </body>
 

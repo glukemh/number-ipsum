@@ -4,16 +4,9 @@ import { exec } from "node:child_process";
 
 const watch = process.argv.includes("--watch");
 const root = "src";
-const elementName = "html-from";
-const shadowRoot = "shadow-root";
-const replaceHtmlRegex = new RegExp(
-	`<(?:${elementName})\\s+((?:src)=".*")\\s*>.*<\\/(?:${elementName})>`,
-	"gs"
-);
-const replaceShadowRegex = new RegExp(
-	`<(?:${shadowRoot})\\s+(?:(src=".*"))\\s*>.*<\\/(?:${shadowRoot})>`,
-	"gs"
-);
+const replaceHtmlRegex = /<re-place\s+(src="[^"]+")\s*>(.*?)<\/re-place>/gs;
+const replaceShadowRegex =
+	/<shadow-root\s+(src="[^"]+")\s*>(.*?)<\/shadow-root>/gs;
 const outDir = "dist";
 console.log("building...");
 
@@ -261,7 +254,15 @@ function recursiveHtmlBundle(root: string, html: string) {
 		if (fs.existsSync(fullPath)) {
 			replacement = fs.readFileSync(fullPath, "utf-8");
 		}
+		const isShadowRootMatch = matches[1] === match;
+		if (isShadowRootMatch) {
+			replacement = declarativeShadowRoot(replacement);
+		}
 		replacedHtml = replacedHtml.replace(fullMatch, replacement);
 	}
 	return recursiveHtmlBundle(root, replacedHtml);
+}
+
+function declarativeShadowRoot(html: string) {
+	return `<template shadowrootmode="open">${html}</template>`;
 }

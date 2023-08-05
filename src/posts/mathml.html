@@ -6,15 +6,17 @@
   <link rel="icon" type="image/svg+xml" href="/assets/aleph.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Semantic Math</title>
+  <script type="importmap">
+    <re-place src="/assets/importmap.json"></re-place>
+  </script>
   <link rel="stylesheet" href="/assets/global.css">
   <script type="module" src="/components/post-mathml.js" async></script>
-  <script type="importmap">
-    <html-from src="/assets/importmap.json"></html-from>
-  </script>
 </head>
 
 <body>
-  <post-mathml></post-mathml>
+  <post-mathml>
+    <shadow-root src="/assets/post-mathml.html"></shadow-root>
+  </post-mathml>
 </body>
 
 </html>

@@ -1,4 +1,4 @@
-import ShadowElement from "/assets/shadow-element";
+import ShadowElement from "/assets/shadow-element.js";
 
 class HomePage extends ShadowElement {
 	ul = this.shadow.querySelector("ul") as HTMLUListElement;

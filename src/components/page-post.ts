@@ -1,5 +1,5 @@
-import "./main-nav";
-import ShadowElement from "/assets/shadow-element";
+import "./main-nav.js";
+import ShadowElement from "/assets/shadow-element.js";
 
 class PagePost extends ShadowElement {
 	heading = this.shadow.querySelector("h1") as HTMLHeadingElement;

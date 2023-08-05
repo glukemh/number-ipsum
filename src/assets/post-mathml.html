@@ -2,6 +2,7 @@
 <link rel="stylesheet" href="/assets/article.css">
 <link rel="stylesheet" href="/assets/post-mathml.css">
 <page-post article-title="Semantic Math">
+  <shadow-root src="/assets/page-post.html"></shadow-root>
   <article>
     <h2 id="mathml-heading" class="heading" slot="heading"><span>MathML</span></h2>
     <section aria-labelledby="mathml-heading">
@@ -35,13 +36,17 @@
             <mn>4</mn>
           </mrow>
         </math>.
-        This markup uses the <format-code language="xml">&lt;math&gt;</format-code> element, and
-        looks like the following if you inspect this document.
+        <span>This markup uses the</span>
+        <format-code language="xml">
+          <shadow-root src="/assets/format-code.html"></shadow-root>
+          &lt;math&gt;
+        </format-code>
+        <span>
+          element, and looks like the following if you inspect this document.
+        </span>
       </p>
       <format-code block language="xml">
-        <template shadowrootmode="open">
-          <html-from src="/assets/format-code.html"></html-from>
-        </template>
+        <shadow-root src="/assets/format-code.html"></shadow-root>
         <math>
           <mrow>
             <mi>y</mi>

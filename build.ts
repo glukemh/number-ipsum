@@ -1,6 +1,6 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { exec } from "node:child_process";
+import { spawn, exec } from "node:child_process";
 
 const watch = process.argv.includes("--watch");
 const root = "src";
@@ -65,11 +65,42 @@ if (watch) {
 				break;
 		}
 	});
-	exec("npm run tsc -- --watch", (err, stdout) => {
-		console.log(stdout);
-		if (err) {
-			console.error("Error running tsc:", err);
+	exec(
+		"npm run tsc -- server.ts --module ESNext --target ESNext --allowSyntheticDefaultImports",
+		(err, stdout) => {
+			console.log(stdout);
+			if (err) {
+				console.error("Error building server: " + err);
+			} else {
+				const serverSpawn = spawn("node", ["server.js"]);
+				serverSpawn.on("error", (err) => {
+					console.error("Failed to start server process. " + err);
+				});
+				serverSpawn.stdout.on("data", (stdout) => {
+					console.log("server: " + stdout);
+				});
+				serverSpawn.stderr.on("data", (stderr) => {
+					console.error(`server error: ${stderr}`);
+				});
+				serverSpawn.on("close", (code) => {
+					console.log(`server process exited with code ${code}`);
+				});
+			}
 		}
+	);
+
+	const tsSpawn = spawn("npm", ["run", "tsc", "--", "--watch"]);
+	tsSpawn.on("error", (err) => {
+		console.error("Failed to start tsc process. " + err);
+	});
+	tsSpawn.stdout.on("data", (stdout) => {
+		console.log("tsc: " + stdout);
+	});
+	tsSpawn.stderr.on("data", (stderr) => {
+		console.error(`tsc error: ${stderr}`);
+	});
+	tsSpawn.on("close", (code) => {
+		console.log(`tsc process exited with code ${code}`);
 	});
 }
 
@@ -97,18 +128,7 @@ async function copyTo(
 
 function handleFileChange(root: string, filePath: string, outDir: string) {
 	if (filePath.endsWith(".html")) {
-		console.log(`rebuilding html ${filePath}...`);
-		const node = htmlFiles.get(filePath);
-		if (!node) {
-			console.warn(`File not indexed: ${filePath}`);
-			return;
-		}
-		setNodeDependencies(root, node, htmlFiles);
-		if (hasLocalCycle(node)) {
-			console.error(`Dependency cycle detected: ${node.name}`);
-			return;
-		}
-		buildFile(root, filePath, outDir);
+		buildHtmlFileAndDependents(root, filePath, outDir);
 		console.log("done rebuilding");
 	} else if (!filePath.endsWith(".ts")) {
 		const outPath = path.join(outDir, filePath);
@@ -119,6 +139,30 @@ function handleFileChange(root: string, filePath: string, outDir: string) {
 		}
 		fs.copyFileSync(rootPath, outPath);
 	}
+}
+
+function buildHtmlFileAndDependents(
+	root: string,
+	filePath: string,
+	outDir: string
+) {
+	console.log(`rebuilding html ${filePath}...`);
+	const node = htmlFiles.get(filePath);
+	if (!node) {
+		console.warn(`File not indexed: ${filePath}`);
+		return;
+	}
+	setNodeDependencies(root, node, htmlFiles);
+	if (hasLocalCycle(node)) {
+		console.error(`Dependency cycle detected: ${node.name}`);
+		return;
+	}
+	buildFile(root, filePath, outDir);
+	htmlFiles.forEach((n, filePath) => {
+		if (n.hasDependency(node)) {
+			buildHtmlFileAndDependents(root, filePath, outDir);
+		}
+	});
 }
 
 function buildFile(root: string, filePath: string, outDir: string) {

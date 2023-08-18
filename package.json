@@ -4,10 +4,9 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"dev": "tsc build.ts --module ESNext --target ESNext && node build.js --watch",
+		"dev": "npm run build -- --watch",
 		"build": "tsc build.ts --module ESNext --target ESNext && node build.js",
-		"tsc": "tsc",
-		"serve": "tsc server.ts --module ESNext --target ESNext --allowSyntheticDefaultImports && node server.js"
+		"tsc": "tsc"
 	},
 	"devDependencies": {
 		"@types/express": "^4.17.17",
